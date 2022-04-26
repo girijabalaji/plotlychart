@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<!-- Navigation -->   
+ <div class="cd-full-width">
+    <div class="container-fluid js-tm-page-content tm-page-1">
+        
+        
+        <div class="row">
+            <div class="col-xs-12">
+               <div class=" text-xs-left tm-textbox tm-textbox-1-col" style="width:1600px;">
+
+                    <iframe src="{% static 'dist/my_raceplot3.html' %}" width="100%" height="1200" frameborder="0" border="0" cellspacing="0" id="covidrace"></iframe>
+               
+               
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div> 
+{% endblock %}
+

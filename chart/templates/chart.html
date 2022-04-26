@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<!-- Navigation -->   
+ <div class="cd-full-width">
+    <div class="container-fluid js-tm-page-content tm-page-1">
+        
+        <div class="row">
+        
+            <div class="col-xs-12">
+                 <div class=" text-xs-left tm-textbox tm-textbox-1-col">
+                    {% if bargraph %}
+                    {{ bargraph|safe }}
+                    {% else %}
+                    <p>No graph was provided.</p>
+                    {% endif %}
+                 
+                </div>
+                
+                <div class=" text-xs-left tm-textbox tm-textbox-1-col">
+                    {% if stockgraph %}
+                    {{ stockgraph|safe }}
+                    {% else %}
+                    <p>No graph was provided.</p>
+                    {% endif %}
+                </div>
+               
+            </div>
+
+        </div>
+     </div>
+     <a href="javascript:void(0)" id="loadMore">Load More</a>
+</div> 
+{% endblock %}
+{% block extra_js %}
+<script type="text/javascript">
+    var array = ['scatter_chart_with_covid','sunburust_chart_with_population','pie_chart_with_population','stacked_bar_chart_with_population_by_gender','line_chart_with_covid_data_country','bar_race_chart_with_covid_data_country']
+    var i = 0
+/*    $(window).scroll(function() {
+        
+    if(Math.ceil($(window).scrollTop()) == Math.ceil(($(document).height() - $(window).height()))) {
+       $.ajax({
+             url: '/'+array[i],
+             type: 'post',
+             dataType: 'json',
+             beforeSend: function() {
+                $("#"+array[i]).html('<div class="spinner"></div>')
+             },
+             success: function(data) {
+              
+               console.log(data.array[i])
+              if(data){
+                $("#"+array[i]).html(data.array[i])
+              }else{
+                $("#"+array[i]).html('<p>No graph was provided.</p>')
+              }
+             }
+      })
+       i++
+    }
+});*/
+ $("#loadMore").on("click", function(e){
+    e.preventDefault();
+   $.ajax({
+             url: '/'+array[i],
+             type: 'post',
+             dataType: 'json',
+             beforeSend: function() {
+                $('div.tm-page-1').append('<div class="spinner"></div>')
+                $("#loadMore").hide()
+             },
+             success: function(data) {
+                $('.spinner').remove()
+                $("#loadMore").show()
+                response = data[0]
+                index = array[i]
+                if(response){
+                 $("div.tm-page-1").append('<div class="row"><div class="col-xs-12"><div class=" text-xs-left tm-textbox tm-textbox-1-col" id="'+index+'">'+response[index]+'</div></div></div>')
+                    $('html, body').animate({ scrollTop: $("#"+index).offset().top }, 500);
+
+                }
+                
+                if(i == (array.length - 1))
+                    $("#loadMore").hide() 
+                else 
+                    i++
+             }
+      })
+   
+        
+  });
+</script>
+{% endblock %}
